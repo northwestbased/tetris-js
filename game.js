@@ -1,5 +1,5 @@
 var Tetris = function(parentElement){
-  this.createShape = function(){
+  var createShape = function(){
     var shapes = [
       {name:'I', locations:[8,9,10,11], leftCorner:{y:-2, x:3}, color: 'red'},
       {name:'J', locations:[3,4,5,8], leftCorner:{y:-2, x:3}, color: 'green'},
@@ -11,7 +11,7 @@ var Tetris = function(parentElement){
     ];
     return shapes[Math.floor(Math.random()*shapes.length)];
   };
-  this.rotateShape = function(shape){
+  var rotateShape = function(shape){
     var newShape = {locations:[], color:shape.color, name: shape.name, leftCorner: shape.leftCorner};
     if (shape.name === 'I')
       for(var i = 0; i < shape.locations.length; ++i){
@@ -25,161 +25,166 @@ var Tetris = function(parentElement){
       newShape = shape;
     return newShape;
   }
-  this.isValid = function(shape){
+  var isValid = function(shape){
     if (shape.name === 'I')
       for (var i = 0; i < shape.locations.length; ++i){
        var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 4);
        var x = shape.leftCorner.x + shape.locations[i] % 4;
-       if (y >= 0 && !(this.boardState[y] && this.boardState[y][x] && !this.boardState[y][x].occupied))
+       if (y >= 0 && !(boardState[y] && boardState[y][x] && !boardState[y][x].occupied))
          return false;
       }
     else
       for (var i = 0; i < shape.locations.length; ++i){
        var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 3);
        var x = shape.leftCorner.x + shape.locations[i] % 3;
-       if (!(this.boardState[y] && this.boardState[y][x] && !this.boardState[y][x].occupied))
+       if (!(boardState[y] && boardState[y][x] && !boardState[y][x].occupied))
          return false;
       }
     return true;
   }
-  this.clearRows = function(){
+  var clearRows = function(){
     var scoreToAdd = 10;
     for (var y = 0; y < 20; ++ y) {
       var flag = true;
       for (var x = 0; x < 10; ++ x) {
-        if(this.boardState[y][x].occupied == false)
+        if(boardState[y][x].occupied == false)
           flag = false;
       }
       if (flag) {
-        this.boardState.splice(y,1);
-        this.boardState.unshift([])
+        boardState.splice(y,1);
+        boardState.unshift([])
         for (var j = 0; j < 10; ++j) {
-          this.boardState[0][j] = {'occupied':false, 'color':'white'};
+          boardState[0][j] = {'occupied':false, 'color':'white'};
         }
-        this.score += scoreToAdd;
+        score += scoreToAdd;
         scoreToAdd += 10;
-        if (this.interval > 80) {
-          this.delay -= 5;
-          clearInterval(this.interval);
-          this.interval = setInterval(this.tick.bind(this), this.delay);
+        if (interval > 80) {
+          delay -= 5;
+          clearInterval(interval);
+          interval = setInterval(tick.bind(this), delay);
         }
       }
     }
   }
-  this.moveLeft = function(){
-    this.shape.leftCorner.x -= 1;
-    if (this.isValid(this.shape))
-      this.render();
+  var moveLeft = function(){
+    shape.leftCorner.x -= 1;
+    if (isValid(shape))
+      render();
     else
-      this.shape.leftCorner.x += 1;
+      shape.leftCorner.x += 1;
   }
-  this.moveRight = function(){
-    this.shape.leftCorner.x += 1;
-    if (this.isValid(this.shape))
-      this.render();
+  var moveRight = function(){
+    shape.leftCorner.x += 1;
+    if (isValid(shape))
+      render();
     else
-      this.shape.leftCorner.x -= 1;
+      shape.leftCorner.x -= 1;
   }
-  this.rotate = function() {
-    var tempShape = this.rotateShape(this.shape);
-    if (this.isValid(tempShape)){
-      this.shape = tempShape;
+  var rotate = function() {
+    var tempShape = rotateShape(shape);
+    if (isValid(tempShape)){
+      shape = tempShape;
     }
-    this.render();
+    render();
   }
-  this.render = function(){
-    for (var y = 0; y < this.boardState.length; ++y){
-      for (var x = 0; x < this.boardState[y].length; ++x){
-        this.board.children[y].children[x].className = this.boardState[y][x].color;
+  var render = function(){
+    for (var y = 0; y < boardState.length; ++y){
+      for (var x = 0; x < boardState[y].length; ++x){
+        board.children[y].children[x].className = boardState[y][x].color;
       }
     }
-    if (this.shape.name === 'I')
-      for (var i = 0; i < this.shape.locations.length; ++i){
-       var y = this.shape.leftCorner.y + Math.floor(this.shape.locations[i] / 4);
-       var x = this.shape.leftCorner.x + this.shape.locations[i] % 4;
+    if (shape.name === 'I')
+      for (var i = 0; i < shape.locations.length; ++i){
+       var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 4);
+       var x = shape.leftCorner.x + shape.locations[i] % 4;
        if(y >= 0)
-         this.board.children[y].children[x].className = this.shape.color;
+         board.children[y].children[x].className = shape.color;
       }
     else
-      for (var i = 0; i < this.shape.locations.length; ++i){
-       var y = this.shape.leftCorner.y + Math.floor(this.shape.locations[i] / 3);
-       var x = this.shape.leftCorner.x + this.shape.locations[i] % 3;
+      for (var i = 0; i < shape.locations.length; ++i){
+       var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 3);
+       var x = shape.leftCorner.x + shape.locations[i] % 3;
        if(y >= 0)
-         this.board.children[y].children[x].className = this.shape.color;
+         board.children[y].children[x].className = shape.color;
       }
-      this.scoreTag.innerHTML = this.score;
+      scoreTag.innerHTML = score;
   }
-  this.saveShape = function(){
-    if (this.shape.name === 'I')
-      for (var i = 0; i < this.shape.locations.length; ++i){
-       var y = this.shape.leftCorner.y + Math.floor(this.shape.locations[i] / 4);
-       var x = this.shape.leftCorner.x + this.shape.locations[i] % 4;
-       this.boardState[y][x].color = this.shape.color;
-       this.boardState[y][x].occupied = true;
+  var saveShape = function(){
+    if (shape.name === 'I')
+      for (var i = 0; i < shape.locations.length; ++i){
+       var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 4);
+       var x = shape.leftCorner.x + shape.locations[i] % 4;
+       boardState[y][x].color = shape.color;
+       boardState[y][x].occupied = true;
       }
     else
-      for (var i = 0; i < this.shape.locations.length; ++i){
-       var y = this.shape.leftCorner.y + Math.floor(this.shape.locations[i] / 3);
-       var x = this.shape.leftCorner.x + this.shape.locations[i] % 3;
-       this.boardState[y][x].color = this.shape.color;
-       this.boardState[y][x].occupied = true;
+      for (var i = 0; i < shape.locations.length; ++i){
+       var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 3);
+       var x = shape.leftCorner.x + shape.locations[i] % 3;
+       boardState[y][x].color = shape.color;
+       boardState[y][x].occupied = true;
       }
   }
-  this.tick = function(){
-    this.shape.leftCorner.y += 1;
-    if(!this.isValid(this.shape)){
-      this.shape.leftCorner.y -= 1;
-      if (this.shape.leftCorner.y == -2){
-        this.score += ", game over!";
-        clearInterval(this.interval);
+  var tick = function(){
+    shape.leftCorner.y += 1;
+    if(!isValid(shape)){
+      shape.leftCorner.y -= 1;
+      if (shape.leftCorner.y < -1){
+        score += ", game over!";
+        clearInterval(interval);
       }
-      if(this.shape.leftCorner.y == -1){
-        this.score += ", game over!";
-        clearInterval(this.interval);
-      }
-      this.saveShape();
-      this.shape = this.createShape();
+      else {
+        saveShape();
+        shape = createShape();
+      };
     }
-    this.clearRows();
-    this.render();
+    clearRows();
+    render();
   }
-  this.board = parentElement;
-  this.scoreTag = document.getElementById("score");
+  var board = parentElement;
+  var scoreTag = document.getElementById("score");
 
   window.onkeydown = function (e){
     var code = e.keyCode ? e.keyCode : e.which;
      switch (code){
        case 37:
-         tetris.moveLeft();
+         moveLeft();
          break;
        case 38:
-         tetris.rotate();
+         rotate();
          break;
        case 39:
-         tetris.moveRight();
+         moveRight();
          break;
        case 40:
-         tetris.tick();
+         tick();
      }
   }
-  this.start = function interval() {
-    this.boardState = [];
-    if (this.interval)
-      clearInterval(this.interval);
-    for (var i = 0; i < 20; ++i){
-      this.boardState[i] = [];
-      for (var j = 0; j < 10; ++j)
-        this.boardState[i][j] = {'occupied':false, 'color':'white'};
+  var score,
+      shape,
+      delay,
+      interval;
+  
+  return { 
+    start :function () {
+    boardState = [];
+      if (interval)
+        clearInterval(interval);
+      for (var i = 0; i < 20; ++i){
+        boardState[i] = [];
+        for (var j = 0; j < 10; ++j)
+          boardState[i][j] = {'occupied':false, 'color':'white'};
+      }
+      score = 0;
+      shape = createShape();
+      delay = 300; 
+      render();
+      interval = setInterval(tick.bind(this), delay);
     }
-    this.score = 0;
-    this.shape = this.createShape();
-    this.delay = 300; 
-    this.render();
-    this.interval = setInterval(this.tick.bind(this), this.delay);
   }
 };
 
-var tetris = new Tetris(document.getElementsByTagName('tbody')[0]);
+var tetris = Tetris(document.getElementsByTagName('tbody')[0]);
 tetris.start();
 var restart = document.getElementById("restart");
 

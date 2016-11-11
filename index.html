@@ -22,108 +22,17 @@
       width:410px;
       margin:auto;
     }
-    table{
-      border:4px solid gray;
-      margin:auto; }
-    td{
-      display:inline-block;
-      width:39px;
-      height:39px;
-      border:1px solid white;
-      padding:0;
+    canvas{
+      border:5px solid black;
+      display:block;
+      margin:auto; 
     }
-    td.red{
-      background:red;
-    }
-    td.blue{
-      background:blue;
-    }
-    td.green{
-      background:green;
-    }
-    td.purple{
-      background:purple;
-    }
-    td.magenta{
-      background:magenta;
-    }
-    td.orange{
-      background:orange;
-    }
-    td.cyan{
-      background:cyan;
-    }
-  </style>
-  </style>
-  </style>
-    
-  </style>
   </style>
 </head>
 <body>
 <div id="title">TETRIS</div>
-<table cellspacing="0">
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-  <tr>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  </tr>
-</table>
+<canvas id="tetrisCanvas"></canvas>
+
 <div id="controls"><div>Score: <span id="score">0</span></div> <div id="text">Controls: Arrow Keys.</div><div id="restart">Restart Game</div></div>
 </body>
 <script src="game.js"></script>

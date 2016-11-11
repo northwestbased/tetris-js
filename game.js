@@ -21,7 +21,7 @@ var Tetris = function(parentElement){
       for(var i = 0; i < shape.locations.length; ++i){
         newShape.locations[i] = (shape.locations[i] * 3 + 2) % 10;
       }
-    else if(shape.name == '0')
+    else if(shape.name == 'O')
       newShape = shape;
     return newShape;
   }
@@ -37,7 +37,7 @@ var Tetris = function(parentElement){
       for (var i = 0; i < shape.locations.length; ++i){
        var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 3);
        var x = shape.leftCorner.x + shape.locations[i] % 3;
-       if (!(boardState[y] && boardState[y][x] && !boardState[y][x].occupied))
+       if (y >= 0 && !(boardState[y] && boardState[y][x] && !boardState[y][x].occupied))
          return false;
       }
     return true;
@@ -88,24 +88,45 @@ var Tetris = function(parentElement){
     render();
   }
   var render = function(){
+    context.clearRect(0,0, board.width, board.height);
+    context.lineWidth = "5";
     for (var y = 0; y < boardState.length; ++y){
       for (var x = 0; x < boardState[y].length; ++x){
-        board.children[y].children[x].className = boardState[y][x].color;
+        if(boardState[y][x].color !== "white")
+        context.beginPath();
+        if(boardState[y][x].color !== "white")
+        context.fillStyle = boardState[y][x].color;
+        if(boardState[y][x].color !== "white")
+        context.fillRect(x*40, y*40, 40, 40);
+        if(boardState[y][x].color !== "white")
+        context.rect(x*40, y*40, 40, 40);
+        if(boardState[y][x].color !== "white")
+          context.stroke();
       }
     }
     if (shape.name === 'I')
       for (var i = 0; i < shape.locations.length; ++i){
-       var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 4);
-       var x = shape.leftCorner.x + shape.locations[i] % 4;
-       if(y >= 0)
-         board.children[y].children[x].className = shape.color;
-      }
+        var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 4);
+        var x = shape.leftCorner.x + shape.locations[i] % 4;
+        if(y >= 0) {
+          context.beginPath();
+          context.fillStyle = shape.color;
+          context.fillRect(x*40, y*40, 40, 40);
+          context.rect(x*40, y*40, 40, 40);
+          context.stroke();
+       }
+     }
     else
       for (var i = 0; i < shape.locations.length; ++i){
-       var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 3);
-       var x = shape.leftCorner.x + shape.locations[i] % 3;
-       if(y >= 0)
-         board.children[y].children[x].className = shape.color;
+        var y = shape.leftCorner.y + Math.floor(shape.locations[i] / 3);
+        var x = shape.leftCorner.x + shape.locations[i] % 3;
+        if (y >= 0) {
+          context.beginPath();
+          context.fillStyle = shape.color;
+          context.fillRect(x*40, y*40, 40, 40);
+          context.rect(x*40, y*40, 40, 40);
+          context.stroke();
+        }
       }
       scoreTag.innerHTML = score;
   }
@@ -163,7 +184,8 @@ var Tetris = function(parentElement){
   var score,
       shape,
       delay,
-      interval;
+      interval,
+      context;
   
   return { 
     start :function () {
@@ -178,13 +200,16 @@ var Tetris = function(parentElement){
       score = 0;
       shape = createShape();
       delay = 300; 
-      render();
       interval = setInterval(tick.bind(this), delay);
+      board.width = 400;
+      board.height = 800;
+      context = board.getContext("2d");
+      render();
     }
   }
 };
 
-var tetris = Tetris(document.getElementsByTagName('tbody')[0]);
+var tetris = Tetris(document.getElementById("tetrisCanvas"));
 tetris.start();
 var restart = document.getElementById("restart");
 

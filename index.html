@@ -1,5 +1,7 @@
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Tetris</title>
   <style>
     button{
       float:right; }
@@ -14,7 +16,6 @@
     }
     #controls > *{
       text-align:center;
-      font-style:italic;
       font:1.2em sans;
     }
     #controls, #title{
@@ -22,8 +23,13 @@
       width:410px;
       margin:auto;
     }
+    #controls div:first-child {
+      float:left;
+    }
+    #controls #restart {
+      float:right;
+    }
     canvas{
-      border:5px solid black;
       display:block;
       margin:auto; 
     }
@@ -32,8 +38,8 @@
 <body>
 <div id="title">TETRIS</div>
 <canvas id="tetrisCanvas"></canvas>
-
-<div id="controls"><div>Score: <span id="score">0</span></div> <div id="text">Controls: Arrow Keys.</div><div id="restart">Restart Game</div></div>
+<div id="controls"><div>Score: <span id="score">0</span></div> <div id="restart">Restart Game</div>
+<div id="text"><br >Controls: arrows = move, space = drop,<br>x = speed up, z = store peice</div>
 </body>
 <script src="game.js"></script>
 </html>
